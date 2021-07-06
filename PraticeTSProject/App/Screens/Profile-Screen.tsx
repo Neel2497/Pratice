@@ -7,7 +7,7 @@ const ProfileScreen = () => {
 
   const onIncrement = () => {
     let prevValue = click;
-    prevValue = prevValue + 1;
+    prevValue += 10;
 
     setClick(prevValue++);
   };
