@@ -9,8 +9,12 @@
  */
 
 import React, {useState} from 'react';
-import ProfileScreen from './App/Screens/Profile-Screen';
+import {createStore} from 'redux';
+import RootReducer from './App/redux/reducer';
+import PostScreen from './App/Screens/Post-Screen';
+// import ProfileScreen from './App/Screens/Profile-Screen';
 import UserContext from './Contexts/userContext';
+import {Provider} from 'react-redux';
 
 const App = () => {
   const [userData, setUserData] = useState({
@@ -20,9 +24,13 @@ const App = () => {
   });
   const [click, setClick] = useState(0);
 
+  const store = createStore(RootReducer);
   return (
     <UserContext.Provider value={{userData, setUserData, click, setClick}}>
-      <ProfileScreen />
+      <Provider store={store}>
+        <PostScreen />
+      </Provider>
+      {/* <ProfileScreen /> */}
     </UserContext.Provider>
   );
 };
