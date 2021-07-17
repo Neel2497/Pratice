@@ -1,14 +1,16 @@
+import {CLEARCOUNTER, DECREMENTCOUNTER, INCREMENTCOUNTER} from '../constant';
+
 export const CounterIncrement = () => ({
-  type: 'INCREMENT',
+  type: INCREMENTCOUNTER,
   payload: null,
 });
 
 export const CounterDecrement = () => ({
-  type: 'DECREMENT',
+  type: DECREMENTCOUNTER,
   payload: null,
 });
 
 export const CounterClear = () => ({
-  type: 'CLEAR',
+  type: CLEARCOUNTER,
   payload: null,
 });

@@ -1,3 +1,4 @@
+import {ADDTODO, DELETETODO} from '../constant';
 import {TodoReducerInterface} from '../types';
 
 interface actionType {
@@ -14,7 +15,7 @@ const initialState: TodoReducerInterface = {
 
 export default (state = initialState, {type, payload}: actionType) => {
   switch (type) {
-    case 'ADD':
+    case ADDTODO:
       return {
         ...state,
         todo: state.todo.concat({
@@ -22,7 +23,7 @@ export default (state = initialState, {type, payload}: actionType) => {
           value: payload.text,
         }),
       };
-    case 'DELETE':
+    case DELETETODO:
       return {
         ...state,
         todo: state.todo.filter(value => value.index !== payload.id),

@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Button,
-  FlatList,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -16,6 +15,7 @@ import {
   CounterDecrement,
   CounterIncrement,
 } from '../redux/action/counter-action';
+import {getPost} from '../redux/action/post-action';
 import {AddTodo, DeleteTodo} from '../redux/action/todo-action';
 import {RootReducerInterface} from '../redux/types';
 
@@ -23,14 +23,21 @@ const PostScreen = () => {
   const {
     counter: {count},
     todo: {todo},
+    postReducer: {posts, isLoading: postLoading, error: postError},
   } = useSelector((state: RootReducerInterface) => state);
   const dispatch = useDispatch();
   const [text, settext] = useState<string>('');
+
+  useEffect(() => {
+    console.tron.log(posts);
+  }, [posts]);
 
   const AddToList = () => {
     if (text) {
       dispatch(AddTodo({id: todo.length + 1, text: text}));
       settext('');
+    } else {
+      dispatch(getPost());
     }
   };
 
@@ -66,6 +73,14 @@ const PostScreen = () => {
         ))}
 
         <View style={styles.seperatorLine} />
+
+        {posts.map((value, index) => (
+          <View key={index} style={styles.renderContainer}>
+            <Text>{`User Id: ${value.userId}`}</Text>
+            <Text>{`Body: ${value.body}`}</Text>
+            <Text>{`Title: ${value.title}`}</Text>
+          </View>
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
@@ -95,4 +110,13 @@ const styles = StyleSheet.create({
   listContainer: {flex: 1, flexDirection: 'row'} as ViewStyle,
   listText: {flex: 1} as TextStyle,
   listIndex: {width: 20} as TextStyle,
+  renderContainer: {
+    flex: 1,
+    margin: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'black',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  } as ViewStyle,
 });
