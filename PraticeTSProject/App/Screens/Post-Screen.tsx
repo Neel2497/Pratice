@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   Button,
   SafeAreaView,
   ScrollView,
@@ -15,7 +16,10 @@ import {
   CounterDecrement,
   CounterIncrement,
 } from '../redux/action/counter-action';
-import {getPost} from '../redux/action/post-action';
+import {
+  createPost as createPostAction,
+  getPost as getPostAction,
+} from '../redux/action/post-action';
 import {AddTodo, DeleteTodo} from '../redux/action/todo-action';
 import {RootReducerInterface} from '../redux/types';
 
@@ -28,17 +32,19 @@ const PostScreen = () => {
   const dispatch = useDispatch();
   const [text, settext] = useState<string>('');
 
-  useEffect(() => {
-    console.tron.log(posts);
-  }, [posts]);
-
   const AddToList = () => {
     if (text) {
       dispatch(AddTodo({id: todo.length + 1, text: text}));
       settext('');
-    } else {
-      dispatch(getPost());
     }
+  };
+
+  const getPostList = () => {
+    dispatch(getPostAction({limit: 5}));
+  };
+
+  const createAPost = () => {
+    dispatch(createPostAction({title: 'Title', body: 'Body', userId: 1}));
   };
 
   return (
@@ -81,6 +87,18 @@ const PostScreen = () => {
             <Text>{`Title: ${value.title}`}</Text>
           </View>
         ))}
+
+        {postLoading && (
+          <ActivityIndicator size={'small'} color={'lightGray'} />
+        )}
+
+        {postError && (
+          <View>
+            <Text style={styles.textError}>{postError}</Text>
+          </View>
+        )}
+        <Button title={'Get Posts'} onPress={getPostList} />
+        <Button title={'Create Posts'} onPress={createAPost} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -119,4 +137,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
   } as ViewStyle,
+  textError: {textAlign: 'center', color: 'red'} as TextStyle,
 });
